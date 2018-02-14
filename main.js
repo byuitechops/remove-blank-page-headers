@@ -49,9 +49,9 @@ module.exports = (course, stepCallback) => {
                     //need to get rid of html tags and just get the text
                     console.log(title.concat(description));
                     //else delete the description
-                } else {
-                    console.log(`delete the description here`);
                 }
+                // delete the description after adding it to the title, if applicable
+                console.log(`delete the description here`);
             }
         });
     }
