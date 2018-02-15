@@ -8,17 +8,17 @@
 /* Include this line only if you are going to use Canvas API */
 /*const canvas = require('canvas-wrapper'); np*/
 const he = require('he');
-
+const cheerio = require('cheerio');
 /* View available course object functions */
 // https://github.com/byuitechops/d2l-to-canvas-conversion-tool/blob/master/documentation/classFunctions.md
 
 module.exports = (course, stepCallback) => {
 
     /**********************************************
-     * 	getDescriptions()				  
+     * 	getModuleDescriptions()				  
      *  Parameters: none
      **********************************************/
-    function getDescriptions() {
+    function getModuleDescriptions() {
         var manifest = course.content.find(file => {
             return file.name === 'imsmanifest.xml';
         });
@@ -34,8 +34,8 @@ module.exports = (course, stepCallback) => {
         var $ = manifest.dom;
         /* Make an array of each description that isn't empty */
         $('item').each((i, eachItem) => {
-            //            console.log('before encode:' + eachItem.attribs.description)
-            var description = he.decode(eachItem.attribs.description);
+            var description = he.decode(eachItem.attribs.description).trim();
+            var $$ = cheerio.load(description);
             // if the description is not empty, check for the number of words in it
             if (description !== '') {
                 //number of words in the description
@@ -43,21 +43,25 @@ module.exports = (course, stepCallback) => {
                 //if description <=5 words, append to title
                 if (numWords < 6) {
                     //get the title name, then add the description to it;
-                    var title = $(eachItem).find('title').html();
-                    console.log(title);
-                    title.concat(description);
-                    //need to get rid of html tags and just get the text
-                    console.log(title.concat(description));
-                    //else delete the description
+                    var title = $(eachItem).find('title').first().html();
+                    // use '*' in case it doesn't always put the description in a <p> tag
+                    // unsure why .first() is needed, but it duplicates the text otherwise
+                    var decodedHtml = $$('*').first().text();
+                    var concatTitle = `${title}: ${decodedHtml}`;
+                    var newTitle = `<title>${concatTitle}</title>`;
+                    // replace the old title with the new title
+                    $(eachItem).find('title').first().replaceWith(newTitle);
                 }
                 // delete the description after adding it to the title, if applicable
-                console.log(`delete the description here`);
+                $(eachItem).attr('description', '').html();
             }
         });
+        course.message(`Successfully removed module descriptions`);
+        stepCallback(null, course);
     }
 
     /********************************
      *          STARTS HERE         *
      ********************************/
-    getDescriptions();
+    getModuleDescriptions();
 };
