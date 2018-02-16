@@ -1,58 +1,52 @@
-# Child Module Title
-### *Package Name*: child-module-title
-### *Child Type*: <post/pre import>
-### *Platform*: <online/pathway/campus/all> (Ask Zach or Daniel about this)
-### *Required*: <Required/Recommended/Optional> (Ask Zach or Daniel about this)
+# Remove Descriptions
+### *Package Name*: remove-descriptions
+### *Child Type*: pre import
+### *Platform*: all
+### *Required*: Recommended
 
 This child module is built to be used by the Brigham Young University - Idaho D2L to Canvas Conversion Tool. It utilizes the standard `module.exports => (course, stepCallback)` signature and uses the Conversion Tool's standard logging functions. You can view extended documentation [Here](https://github.com/byuitechops/d2l-to-canvas-conversion-tool/tree/master/documentation).
 
 ## Purpose
 
-Describe the reason why this child module exists, and its goals.
+The purpose of this child module is to delete each module's description. As Canvas imports each course, if a module has a description then there is a module item that is created for the description. We do not want Canvas to create a module item for this, and will therefore remove the description before importing the course into Canvas.
 
 ## How to Install
 
 ```
-npm install my-child-module
+npm install remove-descriptions
 ```
 
 ## Run Requirements
 
-List any necessary requirements, such as fields on the `course.info` object. Include if it needs to run first, last, or similar stipulations. 
+None
 
 ## Options
 
-If there are options that need to be set before the module runs, include them in a table, like this:
-
-| Option | Values | Description |
-|--------|--------|-------------|
-|Create Lesson Folders| true/false | Determines if lesson folders should be created inside of "documents" and "media."|
-|Remove Course Image| true/false | Determines if the course image will be removed. |
-
+None
+ 
 ## Outputs
 
-If your module adds anything to `course.info` or anywhere else on the course object, please include a description of each in a table:
-
-| Option | Type | Location |
-|--------|--------|-------------|
-|Lesson Folders| Array | course.info|
+None
 
 ## Process
 
-Describe in steps how the module accomplishes its goals.
-
-1. Does this thing
-2. Does that thing
-3. Does that other thing
+1. Get the contents of the 'imsmanifest.xml'
+2. Read each 'organization>item'
+3. Check if the 'item' has a 'description' attribute that is empty or not
+	- If empty, move to the next item
+	- If not empty, check if the description length is five words or less
+4. If the description length is five words or less:
+	- Append the description to the 'item' title
+	- Then delete the description
+5. Else if the description length is more than five words:
+	- Delete the description
 
 ## Log Categories
 
-List the categories used in logging data in your module.
-
-- Discussions Created
-- Canvas Files Deleted
-- etc.
+None
 
 ## Requirements
-
-These are the expectations for the child module. What does it need to do? What is the "customer" wanting from it? 
+ 
+1. The child module will append module descriptions to the module titles if descriptions are five words or less
+2. The child module will not append module descriptions to the module titles if descriptions are more than five words
+3. The child module will delete the descriptions
