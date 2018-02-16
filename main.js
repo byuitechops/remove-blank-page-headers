@@ -2,7 +2,8 @@
 /*eslint no-console:1*/
 
 /* Module Description */
-/* The purpose of this child module is to delete each module's description */
+/* The purpose of this child module is to delete each module's 
+description attribute before importing the course into Canvas */
 
 /* Put dependencies here */
 const he = require('he');
@@ -55,7 +56,7 @@ module.exports = (course, stepCallback) => {
 				$(eachItem).attr('description', '').html();
 			}
 		});
-		console.log($.html());
+
 		course.message(`Successfully removed module descriptions`);
 		stepCallback(null, course);
 		return;
