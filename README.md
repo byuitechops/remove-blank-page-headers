@@ -43,7 +43,8 @@ None
 
 ## Log Categories
 
-None
+Module Descriptions Deleted
+Module titles with merged descriptions
 
 ## Requirements
  
