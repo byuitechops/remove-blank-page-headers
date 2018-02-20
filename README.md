@@ -1,5 +1,5 @@
 # Remove Descriptions
-### *Package Name*: remove-descriptions
+### *Package Name*: Remove Blank Page Headers
 ### *Child Type*: pre import
 ### *Platform*: all
 ### *Required*: Recommended
@@ -13,7 +13,7 @@ The purpose of this child module is to delete each module's description. As Canv
 ## How to Install
 
 ```
-npm install remove-descriptions
+npm install https://github.com/byuitechops/remove-blank-page-headers.git
 ```
 
 ## Run Requirements

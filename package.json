@@ -1,5 +1,5 @@
 {
-	"name": "remove-descriptions",
+	"name": "remove-blank-page-headers",
 	"version": "1.0.0",
 	"description": "This child module removes the descriptions from the module titles. If the description is five words or less, it appends the description to the title. If it is more than five words, it doesn't append it to the title. The module then deletes the descriptions whether they were appeneded to the titles or not.",
 	"main": "main.js",
@@ -19,13 +19,13 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/byuitechops/remove-descriptions.git"
+		"url": "git+https://github.com/byuitechops/remove-blank-page-headers.git"
 	},
 	"author": "Seth Childers",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/byuitechops/remove-descriptions/issues"
+		"url": "https://github.com/byuitechops/remove-blank-page-headers/issues"
 	},
-	"homepage": "https://github.com/byuitechops/remove-descriptions#readme",
+	"homepage": "https://github.com/byuitechops/remove-blank-page-headers#readme",
 	"childType": "preImport"
 }
