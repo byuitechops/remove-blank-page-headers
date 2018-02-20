@@ -55,7 +55,7 @@ module.exports = (course, stepCallback) => {
                 }
                 /* set the description to be an empty string (i.e. delete it), whether it was appended to the title or not */
                 $(eachItem).attr('description', '').html();
-                course.log('Module Descriptions Deleted', {'Module Title': title, 'Description': description});
+                course.log('Module Descriptions Deleted', {'Module Title': $(eachItem).find('title').first().html(), 'Description': description});
             }
         });
 
