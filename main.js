@@ -51,9 +51,11 @@ module.exports = (course, stepCallback) => {
                     var newTitle = `<title>${concatTitle}</title>`;
                     /* replace the old title with the new title */
                     $(eachItem).find('title').first().replaceWith(newTitle);
+                    course.log('Module titles with merged descriptions', {'New Module Title': concatTitle, 'Original Title': title});
                 }
                 /* set the description to be an empty string (i.e. delete it), whether it was appended to the title or not */
                 $(eachItem).attr('description', '').html();
+                course.log('Module Descriptions Deleted', {'Module Title': title, 'Description': description});
             }
         });
 
