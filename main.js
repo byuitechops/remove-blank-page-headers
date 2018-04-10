@@ -30,8 +30,8 @@ module.exports = (course, stepCallback) => {
 
         /* assign manifest.dom to '$' to parse through the html */
         var $ = manifest.dom;
-        /* loop through each 'organization>item' */
-        $('organization>item').each((i, eachItem) => {
+        /* loop through each <item></item> in 'imsmanifest.xml' */
+        $('item').each((i, eachItem) => {
             /* get the desciption attribute which has an encoded <tag> and decode it, then trim the white spaces off the edges.
 			Will likely look like '<p>Whatever the description is</p>' after decoding and trimming */
             var description = he.decode(eachItem.attribs.description).trim();
@@ -59,6 +59,7 @@ module.exports = (course, stepCallback) => {
             }
         });
 
+        // console.log($.html());
         course.message('Successfully removed module descriptions');
         stepCallback(null, course);
         return;

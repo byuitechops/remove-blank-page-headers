@@ -1,48 +1,49 @@
-/*eslint-env node, es6*/
-
 /* Dependencies */
 const tap = require('tap');
+const canvas = require('canvas-wrapper');
+const asyncLib = require ('async');
+const he = require('he');
+const cheerio = require('cheerio');
 
-function g1Tests(course, callback) {
-    // Tap tests for Gauntlet 1 go here
-    tap.pass('Success! Wheee! 1');
-    // tap.fail('YOLO');
+module.exports = (course, callback) => {
+    tap.test('remove-blank-page-headers', (test) => {
+
+         /* get the contents of 'imsmanifest.xml */
+         var manifest = course.content.find(file => {
+            return file.name === 'imsmanifest.xml';
+        });
+
+        /* if 'imsmanifest.xml' wasn't found, stop the child module */
+        if (!manifest) {
+            test.fail('Couldn\'t locate \'imsmanifest.xml\' for this course');
+            test.end();
+            callback(null, course);
+            return;
+        }
+
+        /* assign manifest.dom to '$' to parse through the html */
+        var $ = manifest.dom;
+        var descriptions = [];
+
+        /* Loop through each <item></item> and look for 'description' attributes with text in them */
+        $('item').each((i, eachItem) => {
+            /* get the desciption attribute which has an encoded <tag> and decode it, then trim the white spaces off the edges.
+			Will likely look like '<p>Whatever the description is</p>' after decoding and trimming */
+            var description = he.decode(eachItem.attribs.description).trim();
+            descriptions.push(description);
+            /* if the description is not empty, then the child module didn't work properly */
+            if (description !== '') {
+                var title = $(eachItem).find('title').first().html();
+                test.fail(`${title} still has a description`);
+            }
+        });
+
+        /* If the descriptions array is empty, then there are no descriptions and the test passed */
+        if (descriptions.length === 0) {
+            test.pass('No descriptions found in the course!');
+        }
+        test.end();
+    });
+
     callback(null, course);
-}
-
-function g2Tests(course, callback) {
-    // Tap tests for Gauntlet 2 go here
-    tap.pass('Success! Wheee! 2');
-    callback(null, course);
-}
-
-function g3Tests(course, callback) {
-    // Tap tests for Gauntlet 3 go here
-    tap.pass('Success! Wheee! 3');
-    callback(null, course);
-}
-
-function g4Tests(course, callback) {
-    // Tap tests for Gauntlet 4 go here
-    tap.pass('Success! Wheee! 4');
-    callback(null, course);
-}
-
-module.exports = [
-        {
-            gauntlet: 1,
-            tests: g1Tests
-        },
-        {
-            gauntlet: 2,
-            tests: g2Tests
-        },
-        {
-            gauntlet: 3,
-            tests: g3Tests
-        },
-        {
-            gauntlet: 4,
-            tests: g4Tests
-        },
-];
+};
